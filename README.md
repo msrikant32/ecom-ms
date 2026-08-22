@@ -43,7 +43,7 @@ npm install
 You'll also need a local MongoDB instance running on `mongodb://127.0.0.1:27017`
 (one database per service, created automatically on first write).
 
-### Option A — run everything with the helper scripts (no Docker)
+### Option A — run everything with the helper scripts (Windows, no Docker)
 
 ```powershell
 .\manage-services.ps1 start           # starts all 9 backend services
@@ -54,9 +54,10 @@ You'll also need a local MongoDB instance running on `mongodb://127.0.0.1:27017`
 .\manage-web.ps1 start                # starts ecom-web on :3100
 ```
 
-Logs land in `logs/<service>.log` at the repo root.
+Logs land in `logs/<service>.log` at the repo root. These two scripts are
+PowerShell and rely on `Get-NetTCPConnection`, so they only run on Windows.
 
-### Option B — Docker Compose
+### Option B — Docker Compose (any OS)
 
 ```bash
 cp .env.docker.example .env   # shared JWT/internal secrets, root of repo
@@ -68,6 +69,37 @@ on the same ports as above.
 
 Then visit the storefront at **http://localhost:3100** (or hit the API
 directly through the gateway at **http://localhost:3000**).
+
+## Installing on a new machine
+
+The steps above assume the repo is already on disk. To set it up from
+scratch on a different machine:
+
+1. **Prerequisites**
+   - Git
+   - Node.js ≥ 18 (built/tested on v22) — only needed for Option A/C below; skip if you're using Docker
+   - [Docker](https://docs.docker.com/get-docker/) — needed for Option B; not needed for A/C
+   - MongoDB running locally on `127.0.0.1:27017` — only needed for Option A/C; Docker Compose provisions its own
+
+2. **Clone**
+   ```bash
+   git clone https://github.com/msrikant32/ecom-ms.git
+   cd ecom-ms
+   ```
+
+3. **Pick a path:**
+   - **Docker Compose** (simplest, works on Windows/Mac/Linux) → Option B above.
+   - **Windows, no Docker** → Option A above (`manage-services.ps1` / `manage-web.ps1`).
+   - **Mac/Linux, no Docker** → after `cp .env.example .env && npm install` in each of the 9 backend
+     folders (see "Getting started" above), run `npm start` in each one (separate terminals or
+     background processes), then in `ecom-web`: `cp .env.local.example .env.local && npm install && npm run dev`.
+
+4. **Checklist before first run**
+   - Ports **3000–3008** and **3100** are free (plus **27017** if not using Docker).
+   - MongoDB is actually running before you start the backend services (Option A/C) — Docker Compose
+     (Option B) handles this for you.
+   - Default secrets in every `.env.example` are placeholders (`change_me_*`) — fine for local dev,
+     rotate them before deploying anywhere real (see `ARCHITECTURE.md`'s "Not built yet").
 
 ## Key flows
 
