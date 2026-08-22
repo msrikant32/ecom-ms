@@ -32,12 +32,34 @@ called service-to-service.
 
 ## Getting started
 
-Each service needs its own `.env` (never committed — see `.gitignore`):
+Each service needs its own `.env` (never committed — see `.gitignore`) and
+its own `npm install` — there's no root `package.json`, so dependencies must
+be installed per folder:
 
 ```bash
-# in every service folder (ecom-*-service, event-bus, gateway, ecom-web)
-cp .env.example .env        # ecom-web uses .env.local.example → .env.local
-npm install
+cd gateway                      && cp .env.example .env       && npm install && cd ..
+cd ecom-auth-service             && cp .env.example .env       && npm install && cd ..
+cd ecom-catalog-service          && cp .env.example .env       && npm install && cd ..
+cd ecom-cart-service             && cp .env.example .env       && npm install && cd ..
+cd ecom-order-service            && cp .env.example .env       && npm install && cd ..
+cd event-bus                     && cp .env.example .env       && npm install && cd ..
+cd ecom-payment-service          && cp .env.example .env       && npm install && cd ..
+cd ecom-inventory-service        && cp .env.example .env       && npm install && cd ..
+cd ecom-notification-service     && cp .env.example .env       && npm install && cd ..
+cd ecom-web                      && cp .env.local.example .env.local && npm install && cd ..
+```
+
+Or, as a loop (PowerShell):
+```powershell
+$services = 'gateway','ecom-auth-service','ecom-catalog-service','ecom-cart-service',
+            'ecom-order-service','event-bus','ecom-payment-service',
+            'ecom-inventory-service','ecom-notification-service'
+foreach ($s in $services) {
+  Copy-Item "$s\.env.example" "$s\.env" -ErrorAction SilentlyContinue
+  npm install --prefix $s
+}
+Copy-Item 'ecom-web\.env.local.example' 'ecom-web\.env.local' -ErrorAction SilentlyContinue
+npm install --prefix ecom-web
 ```
 
 You'll also need a local MongoDB instance running on `mongodb://127.0.0.1:27017`
@@ -90,9 +112,9 @@ scratch on a different machine:
 3. **Pick a path:**
    - **Docker Compose** (simplest, works on Windows/Mac/Linux) → Option B above.
    - **Windows, no Docker** → Option A above (`manage-services.ps1` / `manage-web.ps1`).
-   - **Mac/Linux, no Docker** → after `cp .env.example .env && npm install` in each of the 9 backend
-     folders (see "Getting started" above), run `npm start` in each one (separate terminals or
-     background processes), then in `ecom-web`: `cp .env.local.example .env.local && npm install && npm run dev`.
+   - **Mac/Linux, no Docker** → run the `npm install` steps in "Getting started" above (each
+     folder needs its own install), then run `npm start` in each of the 9 backend folders
+     (separate terminals or background processes), then in `ecom-web`: `npm run dev`.
 
 4. **Checklist before first run**
    - Ports **3000–3008** and **3100** are free (plus **27017** if not using Docker).
