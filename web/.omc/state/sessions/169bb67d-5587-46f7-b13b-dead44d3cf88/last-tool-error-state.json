@@ -1,7 +1,0 @@
-{
-  "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"python3 -c \\\"import yaml; yaml.safe_load(open('C:/Users/srika/Documents/projects/MERN/express-production-api/docker-compose.yml')); print('YAML valid')\\\" 2>&1 || python -c \\\"import yaml; y...",
-  "error": "Exit code 49\nPython was not found; run without arguments to install from the Microsoft Store, or disable this shortcut from Settings > Apps > Advanced app settings > App execution aliases.\r\nPython was not found; run without arguments to install from the Microsoft Store, or disable this shortcut from Settings > Apps > Advanced app settings > App execution aliases.",
-  "timestamp": "2026-07-28T11:46:55.050Z",
-  "retry_count": 1
-}

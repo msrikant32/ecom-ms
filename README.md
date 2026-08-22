@@ -8,9 +8,6 @@ See [`ARCHITECTURE.md`](ARCHITECTURE.md) for the as-built system design,
 [`REQUIREMENTS.md`](REQUIREMENTS.md) for functional/non-functional scope,
 and [`HLD.md`](HLD.md) / [`LLD.md`](LLD.md) for the high/low-level design.
 
-> **Note:** this folder also contains `web/` and `express-production-api/` —
-> unrelated standalone learning projects, not part of the ecom-ms system.
-
 ## Services
 
 | Service | Port | Pattern | DB |

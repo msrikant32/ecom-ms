@@ -1,31 +1,22 @@
 <#
 .SYNOPSIS
-  Start, stop, restart, monitor, and tail logs for the two Next.js frontend apps.
+  Start, stop, restart, monitor, and tail logs for the ecom-web Next.js frontend.
 
 .DESCRIPTION
   Companion to manage-services.ps1 (backend microservices) - kept as a
-  separate script because these are dev servers, not production services:
+  separate script because this is a dev server, not a production service:
   `npm run dev`, not `npm start`, and "healthy" means "responds to an HTTP
   request at all", not a /health JSON endpoint (Next.js dev servers don't
   have one).
 
   ecom-web is this project's actual e-commerce frontend (talks to the
-  gateway on :3000, documented in ARCHITECTURE.md). web/ is a separate,
-  unrelated Next.js scaffold - its own package.json is a bare
-  create-next-app default with no reference to any service in this system.
-  Both are included here because you asked to run both, not because they're
-  part of the same app.
-
-  web/'s own package.json pins its dev script to port 3001, which collides
-  with ecom-auth-service. This script overrides that to 3101 when launching
-  it, so both frontends can run alongside the full backend without a
-  conflict - see the -p override in $Apps below.
+  gateway on :3000, documented in ARCHITECTURE.md).
 
 .EXAMPLE
   .\manage-web.ps1 start
   .\manage-web.ps1 status -Watch
   .\manage-web.ps1 stop ecom-web
-  .\manage-web.ps1 logs web -Follow
+  .\manage-web.ps1 logs ecom-web -Follow
 #>
 param(
   [Parameter(Mandatory = $true, Position = 0)]
@@ -45,16 +36,8 @@ $Root = $PSScriptRoot
 $LogDir = Join-Path $Root 'logs'
 if (-not (Test-Path $LogDir)) { New-Item -ItemType Directory -Path $LogDir | Out-Null }
 
-# DevCommand overrides the package.json "dev" script's own port where needed
-# (web/ defaults to 3001, which collides with ecom-auth-service).
 $Apps = @(
   @{ Name = 'ecom-web'; Dir = 'ecom-web'; Port = 3100; DevCommand = 'npm run dev' }
-  # Bypassing the npm script deliberately: `npm run dev -- -p 3101` only
-  # appends to the script's own args rather than replacing them, producing
-  # `next dev -p 3001 3101` - Next.js then parses the stray "3101" as a
-  # project directory and fails ("Invalid project directory provided").
-  # Invoking next directly gives full control over the args instead.
-  @{ Name = 'web';      Dir = 'web';      Port = 3101; DevCommand = 'npx next dev -p 3101' }
 )
 
 function Resolve-Targets {
