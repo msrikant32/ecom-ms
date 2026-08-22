@@ -1,0 +1,242 @@
+name: ecom
+
+# Local container parity for the stack manage-services.ps1/manage-web.ps1 run
+# as plain `npm start` processes - same services, same host-published ports
+# (3000-3008, 3100), so CORS_ORIGIN / NEXT_PUBLIC_API_BASE_URL stay identical
+# to local dev since the browser still reaches everything via localhost.
+# Only inter-service URLs change, from 127.0.0.1 to each service's Docker
+# network hostname, since containers don't share a loopback interface.
+#
+# `cp .env.docker.example .env` once, then `docker compose up --build`.
+#
+# Not part of this compose file: the unrelated `web` app (not part of the
+# e-commerce system - see ARCHITECTURE.md), Redis caching / Secrets Manager /
+# ECR-ECS-Fargate / CI (all still "Not built yet" per ARCHITECTURE.md).
+
+services:
+  mongo:
+    image: mongo:7
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      # Host-side 27018, not 27017 - this machine already has a local Mongo
+      # listening on 27017 for non-Docker dev (manage-services.ps1); this
+      # avoids fighting it for the port. Other containers still reach this
+      # one at mongo:27017 over the Docker network regardless of this
+      # mapping - it's only for host-side tools like Compass.
+      - "27018:27017"
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.runCommand({ ping: 1 })"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks: [ecom-network]
+
+  event-bus:
+    build: ./event-bus
+    environment:
+      PORT: 3005
+      INTERNAL_SECRET: ${INTERNAL_SECRET}
+      EVENT_QUEUES: '{"order.paid":["order-paid-inventory","order-paid-notification"],"order.failed":["order-failed-notification"],"order.cancelled":["order-cancelled-inventory","order-cancelled-notification"]}'
+      DEFAULT_VISIBILITY_TIMEOUT_SECONDS: 30
+      DEFAULT_MAX_ATTEMPTS: 5
+      DEFAULT_MAX_MESSAGES: 5
+      RATE_LIMIT_WINDOW_MS: 900000
+      RATE_LIMIT_MAX: 3000
+    volumes:
+      - event-bus-data:/app/data
+    ports:
+      - "3005:3005"
+    networks: [ecom-network]
+
+  auth-service:
+    build: ./ecom-auth-service
+    environment:
+      PORT: 3001
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
+      ACCESS_TOKEN_TTL: 15m
+      REFRESH_TOKEN_TTL: 7d
+      CORS_ORIGIN: http://localhost:3000,http://localhost:3100
+      MONGODB_URI: mongodb://mongo:27017/ecom_auth
+      RATE_LIMIT_WINDOW_MS: 900000
+      RATE_LIMIT_MAX: 100
+      AUTH_RATE_LIMIT_MAX: 10
+    depends_on:
+      mongo:
+        condition: service_healthy
+    ports:
+      - "3001:3001"
+    networks: [ecom-network]
+
+  catalog-service:
+    build: ./ecom-catalog-service
+    environment:
+      PORT: 3002
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET}
+      CORS_ORIGIN: http://localhost:3000,http://localhost:3100
+      MONGODB_URI: mongodb://mongo:27017/ecom_catalog
+      RATE_LIMIT_WINDOW_MS: 900000
+      RATE_LIMIT_MAX: 200
+    volumes:
+      - catalog-uploads:/app/uploads
+    depends_on:
+      mongo:
+        condition: service_healthy
+    ports:
+      - "3002:3002"
+    networks: [ecom-network]
+
+  cart-service:
+    build: ./ecom-cart-service
+    environment:
+      PORT: 3003
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET}
+      CORS_ORIGIN: http://localhost:3000,http://localhost:3100
+      MONGODB_URI: mongodb://mongo:27017/ecom_cart
+      CATALOG_SERVICE_URL: http://catalog-service:3002
+      RATE_LIMIT_WINDOW_MS: 900000
+      RATE_LIMIT_MAX: 300
+    depends_on:
+      mongo:
+        condition: service_healthy
+      catalog-service:
+        condition: service_started
+    ports:
+      - "3003:3003"
+    networks: [ecom-network]
+
+  payment-service:
+    build: ./ecom-payment-service
+    environment:
+      PORT: 3006
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET}
+      CORS_ORIGIN: http://localhost:3000,http://localhost:3100
+      MONGODB_URI: mongodb://mongo:27017/ecom_payment
+      RATE_LIMIT_WINDOW_MS: 900000
+      RATE_LIMIT_MAX: 200
+    depends_on:
+      mongo:
+        condition: service_healthy
+    ports:
+      - "3006:3006"
+    networks: [ecom-network]
+
+  order-service:
+    build: ./ecom-order-service
+    environment:
+      PORT: 3004
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET}
+      CORS_ORIGIN: http://localhost:3000,http://localhost:3100
+      MONGODB_URI: mongodb://mongo:27017/ecom_order
+      CART_SERVICE_URL: http://cart-service:3003
+      PAYMENT_SERVICE_URL: http://payment-service:3006
+      EVENT_BUS_URL: http://event-bus:3005
+      INTERNAL_SECRET: ${INTERNAL_SECRET}
+      RATE_LIMIT_WINDOW_MS: 900000
+      RATE_LIMIT_MAX: 200
+    depends_on:
+      mongo:
+        condition: service_healthy
+      cart-service:
+        condition: service_started
+      payment-service:
+        condition: service_started
+      event-bus:
+        condition: service_started
+    ports:
+      - "3004:3004"
+    networks: [ecom-network]
+
+  inventory-service:
+    build: ./ecom-inventory-service
+    environment:
+      PORT: 3007
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET}
+      CORS_ORIGIN: http://localhost:3000,http://localhost:3100
+      MONGODB_URI: mongodb://mongo:27017/ecom_inventory
+      CATALOG_SERVICE_URL: http://catalog-service:3002
+      EVENT_BUS_URL: http://event-bus:3005
+      INTERNAL_SECRET: ${INTERNAL_SECRET}
+      WORKER_POLL_INTERVAL_MS: 3000
+      RATE_LIMIT_WINDOW_MS: 900000
+      RATE_LIMIT_MAX: 200
+    depends_on:
+      mongo:
+        condition: service_healthy
+      event-bus:
+        condition: service_started
+    ports:
+      - "3007:3007"
+    networks: [ecom-network]
+
+  notification-service:
+    build: ./ecom-notification-service
+    environment:
+      PORT: 3008
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET}
+      CORS_ORIGIN: http://localhost:3000,http://localhost:3100
+      MONGODB_URI: mongodb://mongo:27017/ecom_notification
+      EVENT_BUS_URL: http://event-bus:3005
+      INTERNAL_SECRET: ${INTERNAL_SECRET}
+      WORKER_POLL_INTERVAL_MS: 3000
+      RATE_LIMIT_WINDOW_MS: 900000
+      RATE_LIMIT_MAX: 200
+    depends_on:
+      mongo:
+        condition: service_healthy
+      event-bus:
+        condition: service_started
+    ports:
+      - "3008:3008"
+    networks: [ecom-network]
+
+  gateway:
+    build: ./gateway
+    environment:
+      PORT: 3000
+      CORS_ORIGIN: http://localhost:3100
+      AUTH_SERVICE_URL: http://auth-service:3001
+      CATALOG_SERVICE_URL: http://catalog-service:3002
+      CART_SERVICE_URL: http://cart-service:3003
+      ORDER_SERVICE_URL: http://order-service:3004
+      RATE_LIMIT_WINDOW_MS: 900000
+      RATE_LIMIT_MAX: 300
+    depends_on:
+      auth-service:
+        condition: service_started
+      catalog-service:
+        condition: service_started
+      cart-service:
+        condition: service_started
+      order-service:
+        condition: service_started
+    ports:
+      - "3000:3000"
+    networks: [ecom-network]
+
+  ecom-web:
+    build:
+      context: ./ecom-web
+      args:
+        NEXT_PUBLIC_API_BASE_URL: http://localhost:3000
+    environment:
+      # Server-side fetches run inside this container and need the gateway's
+      # Docker network hostname - the browser (host machine) uses
+      # NEXT_PUBLIC_API_BASE_URL (localhost:3000) instead. See lib/config.ts.
+      API_INTERNAL_URL: http://gateway:3000
+    depends_on:
+      gateway:
+        condition: service_started
+    ports:
+      - "3100:3100"
+    networks: [ecom-network]
+
+volumes:
+  mongo-data:
+  catalog-uploads:
+  event-bus-data:
+
+networks:
+  ecom-network:
+    driver: bridge

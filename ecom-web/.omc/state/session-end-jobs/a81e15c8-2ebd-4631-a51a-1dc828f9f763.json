@@ -1,0 +1,269 @@
+{
+  "version": 1,
+  "jobId": "6abcc577-dee3-454f-b65c-142155a4a5a8",
+  "sessionId": "a81e15c8-2ebd-4631-a51a-1dc828f9f763",
+  "scopeKey": "ae0e1508b996697510dd4d1ef1c8c96a47b50f3eea942a358efd8b1190c9e969",
+  "revision": 2,
+  "createdAt": "2026-07-31T06:19:44.282Z",
+  "updatedAt": "2026-07-31T06:19:45.330Z",
+  "producerGraceExpiresAt": "2026-07-31T06:20:14.290Z",
+  "bestEffortDeadlineAt": "2026-07-31T06:21:05.290Z",
+  "producers": {
+    "core": {
+      "state": "sealed",
+      "intentKey": "b80debdf3b423dda7fedbf1ccdba1662b0b02df37309cb80a7b96789a234af5e",
+      "payloadDigest": "b80debdf3b423dda7fedbf1ccdba1662b0b02df37309cb80a7b96789a234af5e",
+      "sealedAt": "2026-07-31T06:19:45.330Z",
+      "sealedBy": "foreground"
+    },
+    "wiki": {
+      "state": "no-op",
+      "sealedAt": "2026-07-31T06:19:44.282Z",
+      "sealedBy": "wiki-producer"
+    }
+  },
+  "actions": {
+    "foreground-cleanup": {
+      "class": "required",
+      "phase": "deferred-required",
+      "status": "completed",
+      "attempts": 0,
+      "idempotencyKey": "febf6dba2f2536433960a07f7cedce72e946b43ced0896570df80f017b8914d2",
+      "payload": {
+        "transcriptPath": "C:\\Users\\srika\\.claude\\projects\\C--Users-srika-Documents-projects-MERN\\a81e15c8-2ebd-4631-a51a-1dc828f9f763.jsonl",
+        "cwd": "C:\\Users\\srika\\Documents\\projects\\MERN\\ecom-web",
+        "reason": "prompt_input_exit",
+        "input": {
+          "session_id": "a81e15c8-2ebd-4631-a51a-1dc828f9f763",
+          "transcript_path": "C:\\Users\\srika\\.claude\\projects\\C--Users-srika-Documents-projects-MERN\\a81e15c8-2ebd-4631-a51a-1dc828f9f763.jsonl",
+          "cwd": "C:\\Users\\srika\\Documents\\projects\\MERN\\ecom-web",
+          "prompt_id": "224c1e83-f0d3-482b-bf35-e65fd456016a",
+          "hook_event_name": "SessionEnd",
+          "reason": "prompt_input_exit"
+        },
+        "metrics": {
+          "session_id": "a81e15c8-2ebd-4631-a51a-1dc828f9f763",
+          "ended_at": "2026-07-31T06:19:44.253Z",
+          "reason": "prompt_input_exit",
+          "agents_spawned": 0,
+          "agents_completed": 0,
+          "modes_used": []
+        },
+        "initialTeamNames": [],
+        "openClawEnabled": false,
+        "openClawRouting": {},
+        "foregroundResult": {
+          "removedTransientFiles": 2,
+          "completedAt": "2026-07-31T06:19:45.323Z"
+        }
+      },
+      "budgetMs": 9000,
+      "completedAt": "2026-07-31T06:19:45.330Z",
+      "lastOutcomeCode": "completed"
+    },
+    "wiki-capture": {
+      "class": "required",
+      "phase": "deferred-required",
+      "status": "completed",
+      "attempts": 0,
+      "idempotencyKey": "1719cd1ef5b51e0269b78c4cb8c9308c9c1f7b82fd1c067fc034c060f23863f5",
+      "payload": {},
+      "budgetMs": 9000,
+      "completedAt": "2026-07-31T06:19:44.282Z"
+    },
+    "team-cleanup": {
+      "class": "required",
+      "phase": "deferred-required",
+      "status": "pending",
+      "attempts": 0,
+      "idempotencyKey": "cee6ac31df545408e1e822247ac249b3f8182a98a5fe8e448ae3b251e55bdee1",
+      "payload": {
+        "transcriptPath": "C:\\Users\\srika\\.claude\\projects\\C--Users-srika-Documents-projects-MERN\\a81e15c8-2ebd-4631-a51a-1dc828f9f763.jsonl",
+        "cwd": "C:\\Users\\srika\\Documents\\projects\\MERN\\ecom-web",
+        "reason": "prompt_input_exit",
+        "input": {
+          "session_id": "a81e15c8-2ebd-4631-a51a-1dc828f9f763",
+          "transcript_path": "C:\\Users\\srika\\.claude\\projects\\C--Users-srika-Documents-projects-MERN\\a81e15c8-2ebd-4631-a51a-1dc828f9f763.jsonl",
+          "cwd": "C:\\Users\\srika\\Documents\\projects\\MERN\\ecom-web",
+          "prompt_id": "224c1e83-f0d3-482b-bf35-e65fd456016a",
+          "hook_event_name": "SessionEnd",
+          "reason": "prompt_input_exit"
+        },
+        "metrics": {
+          "session_id": "a81e15c8-2ebd-4631-a51a-1dc828f9f763",
+          "ended_at": "2026-07-31T06:19:44.253Z",
+          "reason": "prompt_input_exit",
+          "agents_spawned": 0,
+          "agents_completed": 0,
+          "modes_used": []
+        },
+        "initialTeamNames": [],
+        "openClawEnabled": false,
+        "openClawRouting": {}
+      },
+      "budgetMs": 9000
+    },
+    "python-cleanup": {
+      "class": "required",
+      "phase": "deferred-required",
+      "status": "pending",
+      "attempts": 0,
+      "idempotencyKey": "1f1370c4ac056606059d517e2f106b602d8cbcb04587b3fcc5f3b9f89e649cd0",
+      "payload": {
+        "transcriptPath": "C:\\Users\\srika\\.claude\\projects\\C--Users-srika-Documents-projects-MERN\\a81e15c8-2ebd-4631-a51a-1dc828f9f763.jsonl",
+        "cwd": "C:\\Users\\srika\\Documents\\projects\\MERN\\ecom-web",
+        "reason": "prompt_input_exit",
+        "input": {
+          "session_id": "a81e15c8-2ebd-4631-a51a-1dc828f9f763",
+          "transcript_path": "C:\\Users\\srika\\.claude\\projects\\C--Users-srika-Documents-projects-MERN\\a81e15c8-2ebd-4631-a51a-1dc828f9f763.jsonl",
+          "cwd": "C:\\Users\\srika\\Documents\\projects\\MERN\\ecom-web",
+          "prompt_id": "224c1e83-f0d3-482b-bf35-e65fd456016a",
+          "hook_event_name": "SessionEnd",
+          "reason": "prompt_input_exit"
+        },
+        "metrics": {
+          "session_id": "a81e15c8-2ebd-4631-a51a-1dc828f9f763",
+          "ended_at": "2026-07-31T06:19:44.253Z",
+          "reason": "prompt_input_exit",
+          "agents_spawned": 0,
+          "agents_completed": 0,
+          "modes_used": []
+        },
+        "initialTeamNames": [],
+        "openClawEnabled": false,
+        "openClawRouting": {}
+      },
+      "budgetMs": 9000
+    },
+    "reply-cleanup": {
+      "class": "required",
+      "phase": "deferred-required",
+      "status": "pending",
+      "attempts": 0,
+      "idempotencyKey": "0b3a8b47c28b26d56aca004d4f572b96c118f16819c0d35162418816f9a5420a",
+      "payload": {
+        "transcriptPath": "C:\\Users\\srika\\.claude\\projects\\C--Users-srika-Documents-projects-MERN\\a81e15c8-2ebd-4631-a51a-1dc828f9f763.jsonl",
+        "cwd": "C:\\Users\\srika\\Documents\\projects\\MERN\\ecom-web",
+        "reason": "prompt_input_exit",
+        "input": {
+          "session_id": "a81e15c8-2ebd-4631-a51a-1dc828f9f763",
+          "transcript_path": "C:\\Users\\srika\\.claude\\projects\\C--Users-srika-Documents-projects-MERN\\a81e15c8-2ebd-4631-a51a-1dc828f9f763.jsonl",
+          "cwd": "C:\\Users\\srika\\Documents\\projects\\MERN\\ecom-web",
+          "prompt_id": "224c1e83-f0d3-482b-bf35-e65fd456016a",
+          "hook_event_name": "SessionEnd",
+          "reason": "prompt_input_exit"
+        },
+        "metrics": {
+          "session_id": "a81e15c8-2ebd-4631-a51a-1dc828f9f763",
+          "ended_at": "2026-07-31T06:19:44.253Z",
+          "reason": "prompt_input_exit",
+          "agents_spawned": 0,
+          "agents_completed": 0,
+          "modes_used": []
+        },
+        "initialTeamNames": [],
+        "openClawEnabled": false,
+        "openClawRouting": {}
+      },
+      "budgetMs": 9000
+    },
+    "callback": {
+      "class": "best-effort",
+      "phase": "deferred-best-effort",
+      "status": "pending",
+      "attempts": 0,
+      "idempotencyKey": "d068ede2655bf89e0c0950e087d0603d7dcf45538e94f20a654d08c6f4841895",
+      "payload": {
+        "transcriptPath": "C:\\Users\\srika\\.claude\\projects\\C--Users-srika-Documents-projects-MERN\\a81e15c8-2ebd-4631-a51a-1dc828f9f763.jsonl",
+        "cwd": "C:\\Users\\srika\\Documents\\projects\\MERN\\ecom-web",
+        "reason": "prompt_input_exit",
+        "input": {
+          "session_id": "a81e15c8-2ebd-4631-a51a-1dc828f9f763",
+          "transcript_path": "C:\\Users\\srika\\.claude\\projects\\C--Users-srika-Documents-projects-MERN\\a81e15c8-2ebd-4631-a51a-1dc828f9f763.jsonl",
+          "cwd": "C:\\Users\\srika\\Documents\\projects\\MERN\\ecom-web",
+          "prompt_id": "224c1e83-f0d3-482b-bf35-e65fd456016a",
+          "hook_event_name": "SessionEnd",
+          "reason": "prompt_input_exit"
+        },
+        "metrics": {
+          "session_id": "a81e15c8-2ebd-4631-a51a-1dc828f9f763",
+          "ended_at": "2026-07-31T06:19:44.253Z",
+          "reason": "prompt_input_exit",
+          "agents_spawned": 0,
+          "agents_completed": 0,
+          "modes_used": []
+        },
+        "initialTeamNames": [],
+        "openClawEnabled": false,
+        "openClawRouting": {}
+      },
+      "budgetMs": 2000
+    },
+    "notification": {
+      "class": "best-effort",
+      "phase": "deferred-best-effort",
+      "status": "pending",
+      "attempts": 0,
+      "idempotencyKey": "89c0438ff63097ce04beb60efb87292ff68a7af350a0ee331f3de9dbf42d62fc",
+      "payload": {
+        "transcriptPath": "C:\\Users\\srika\\.claude\\projects\\C--Users-srika-Documents-projects-MERN\\a81e15c8-2ebd-4631-a51a-1dc828f9f763.jsonl",
+        "cwd": "C:\\Users\\srika\\Documents\\projects\\MERN\\ecom-web",
+        "reason": "prompt_input_exit",
+        "input": {
+          "session_id": "a81e15c8-2ebd-4631-a51a-1dc828f9f763",
+          "transcript_path": "C:\\Users\\srika\\.claude\\projects\\C--Users-srika-Documents-projects-MERN\\a81e15c8-2ebd-4631-a51a-1dc828f9f763.jsonl",
+          "cwd": "C:\\Users\\srika\\Documents\\projects\\MERN\\ecom-web",
+          "prompt_id": "224c1e83-f0d3-482b-bf35-e65fd456016a",
+          "hook_event_name": "SessionEnd",
+          "reason": "prompt_input_exit"
+        },
+        "metrics": {
+          "session_id": "a81e15c8-2ebd-4631-a51a-1dc828f9f763",
+          "ended_at": "2026-07-31T06:19:44.253Z",
+          "reason": "prompt_input_exit",
+          "agents_spawned": 0,
+          "agents_completed": 0,
+          "modes_used": []
+        },
+        "initialTeamNames": [],
+        "openClawEnabled": false,
+        "openClawRouting": {}
+      },
+      "budgetMs": 2000
+    },
+    "openclaw": {
+      "class": "best-effort",
+      "phase": "deferred-best-effort",
+      "status": "pending",
+      "attempts": 0,
+      "idempotencyKey": "31fe8f6e1cf204e27006de511df257326fdd98655122ca437013e8779ffc735b",
+      "payload": {
+        "transcriptPath": "C:\\Users\\srika\\.claude\\projects\\C--Users-srika-Documents-projects-MERN\\a81e15c8-2ebd-4631-a51a-1dc828f9f763.jsonl",
+        "cwd": "C:\\Users\\srika\\Documents\\projects\\MERN\\ecom-web",
+        "reason": "prompt_input_exit",
+        "input": {
+          "session_id": "a81e15c8-2ebd-4631-a51a-1dc828f9f763",
+          "transcript_path": "C:\\Users\\srika\\.claude\\projects\\C--Users-srika-Documents-projects-MERN\\a81e15c8-2ebd-4631-a51a-1dc828f9f763.jsonl",
+          "cwd": "C:\\Users\\srika\\Documents\\projects\\MERN\\ecom-web",
+          "prompt_id": "224c1e83-f0d3-482b-bf35-e65fd456016a",
+          "hook_event_name": "SessionEnd",
+          "reason": "prompt_input_exit"
+        },
+        "metrics": {
+          "session_id": "a81e15c8-2ebd-4631-a51a-1dc828f9f763",
+          "ended_at": "2026-07-31T06:19:44.253Z",
+          "reason": "prompt_input_exit",
+          "agents_spawned": 0,
+          "agents_completed": 0,
+          "modes_used": []
+        },
+        "initialTeamNames": [],
+        "openClawEnabled": false,
+        "openClawRouting": {}
+      },
+      "budgetMs": 2000
+    }
+  },
+  "owner": null,
+  "phase": "ready"
+}

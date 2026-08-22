@@ -1,0 +1,8 @@
+node_modules
+npm-debug.log
+.env
+.env.*.local
+*.log
+# Volume-mounted at runtime (see docker-compose.yml) - don't bake local dev
+# uploads into the image.
+uploads

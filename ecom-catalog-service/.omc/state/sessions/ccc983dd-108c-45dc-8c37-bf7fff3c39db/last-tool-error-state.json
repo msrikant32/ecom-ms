@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"REG=$(curl -s -X POST http://localhost:3001/api/v1/auth/register -H \\\"Content-Type: application/json\\\" -d '{\\\"email\\\":\\\"admin@example.com\\\",\\\"password\\\":\\\"password123\\\"}')\\necho \\\"register...",
+  "error": "Exit code 127\nregister: {\"user\":{\"id\":\"6a699cc8ff17c2d1b182c962\",\"email\":\"admin@example.com\",\"roles\":[\"user\"],\"createdAt\":\"2026-07-29T06:25:12.654Z\"},\"accessToken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2YTY5OWNjOGZmMTdjMmQxYjE4MmM5NjIiLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwicm9sZXMiOlsidXNlciJdLCJpYXQiOjE3ODUzMDYzMTIsImV4cCI6MTc4NTMwNzIxMn0.ot9li5AGd9iIPD8bEol0IUzBc-BID0U7ytTvFoqc9ts\"}\n--promote to admin via mongosh--\n/usr/bin/bash: line 7: mongosh: command not found",
+  "timestamp": "2026-07-29T06:25:13.815Z",
+  "retry_count": 1
+}

@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"cd \\\"C:/Users/srika/Documents/projects/MERN/ecom-web\\\" && echo \\\"--- tsc ---\\\" && npx tsc --noEmit 2>&1 && echo \\\"--- eslint ---\\\" && npm run lint 2>&1\",\"description\":\"Type-check and lint ...",
+  "error": "Exit code 1\n--- tsc ---\n--- eslint ---\n\n> ecom-web@0.1.0 lint\n> eslint\n\n\nC:\\Users\\srika\\Documents\\projects\\MERN\\ecom-web\\src\\lib\\cart-context.tsx\n  24:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders\n\nEffects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:\n* Update extern...",
+  "timestamp": "2026-07-29T09:53:32.302Z",
+  "retry_count": 1
+}
